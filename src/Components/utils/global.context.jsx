@@ -1,15 +1,19 @@
-import { createContext } from "react";
+import React, { useState, createContext } from "react";
 
-export const initialState = {theme: "", data: []}
+export const initialState = { theme: "", favs: [] };
 
-export const ContextGlobal = createContext(undefined);
+export const ContextGlobal = createContext(initialState);
 
 export const ContextProvider = ({ children }) => {
-  //Aqui deberan implementar la logica propia del Context, utilizando el hook useMemo
+  const [favs, setFavs] = useState(
+    JSON.parse(localStorage.getItem("favorites")) || []
+  );
 
   return (
-    <ContextGlobal.Provider value={{}}>
+    <ContextGlobal.Provider value={{ favs, setFavs }}>
       {children}
     </ContextGlobal.Provider>
   );
 };
+
+export default ContextGlobal;
