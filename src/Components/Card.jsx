@@ -1,23 +1,25 @@
-import { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { ContextGlobal } from "../Components/utils/global.context";
 
-const Card = ({ name, username, id }) => {
-  const { favs, setFavs } = useContext(ContextGlobal);
+const Card = ({ name, username, id, isFavPage = false }) => {
+  const { setFavs } = useContext(ContextGlobal);
+  const [message, setMessage] = useState("");
 
   const addFav = (e) => {
     e.stopPropagation();
+    e.preventDefault();
 
     const favCard = { name, username, id };
 
     const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
-    const isFavorite = favorites.some((fav) => fav.id === id);
+    const isFavorite = favorites.some((fav) => fav.id === favCard.id);
 
     if (!isFavorite) {
-      favorites.push(favCard);
-      localStorage.setItem("favorites", JSON.stringify(favorites));
-
-      setFavs([...favs, favCard]);
+      const updatedFavorites = [...favorites, favCard];
+      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+      setFavs(updatedFavorites);
+      setMessage("¡Dentista agregado a favoritos!"); // Mensaje de éxito
     } else {
       alert("Este doctor ya está en tus favoritos.");
     }
@@ -32,25 +34,31 @@ const Card = ({ name, username, id }) => {
         <img
           className="w-full h-full object-cover rounded-lg"
           src="/images/doctor.jpg"
-          alt="odonto"
+          alt="Doctor"
         />
       </figure>
       <p className="flex flex-col justify-center items-center">
-        <span className="flex flex-col justify-center items-center text-sm font-light">
-          {name}
-        </span>
+        <span className="text-sm font-light">{name}</span>
       </p>
 
-      <button
-        onClick={addFav}
-        className="absolute top-2 right-2 flex justify-center items-center w-7 h-7 rounded-full bg-white p-1"
-      >
-        <img
-          src="/images/star.png"
-          alt="Star"
-          className="hover:scale-125 hover:brightness-150 transition-transform rounded-full"
-        />
-      </button>
+      {!isFavPage && (
+        <button
+          onClick={addFav}
+          className="absolute top-2 right-2 flex justify-center items-center w-7 h-7 rounded-full bg-white p-1"
+        >
+          <img
+            src="/images/star.png"
+            alt="Add to Favorites"
+            className="hover:scale-125 hover:brightness-150 transition-transform rounded-full"
+          />
+        </button>
+      )}
+
+      {message && (
+        <div className="absolute bottom-2 left-0 w-full text-center text-sm text-red-500">
+          {message}
+        </div>
+      )}
     </div>
   );
 };
