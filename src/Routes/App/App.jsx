@@ -6,6 +6,7 @@ import Detail from "../Detail/Detail";
 import Favs from "../Favs/Favs";
 import NotFound from "../NotFound/NotFound";
 import Navbar from "../../Components/Navbar";
+import Footer from "../../Components/Footer";
 
 import "./App.css";
 
@@ -28,6 +29,7 @@ const App = () => {
         <Navbar />
         <AppRoutes />
       </ContextProvider>
+      <Footer />
     </BrowserRouter>
   );
 };
