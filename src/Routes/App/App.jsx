@@ -25,11 +25,14 @@ const App = () => {
   return (
     <BrowserRouter>
       <ContextProvider>
-        {" "}
-        <Navbar />
-        <AppRoutes />
+        <div className="flex flex-col min-h-screen">
+          <Navbar />
+          <div className="flex-grow">
+            <AppRoutes />
+          </div>
+          <Footer />
+        </div>
       </ContextProvider>
-      <Footer />
     </BrowserRouter>
   );
 };

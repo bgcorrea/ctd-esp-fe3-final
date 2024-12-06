@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { ContextGlobal } from "../Components/utils/global.context";
 
 const Card = ({ name, username, id, isFavPage = false }) => {
-  const { setFavs } = useContext(ContextGlobal);
+  const { setFavs, theme } = useContext(ContextGlobal);
   const [message, setMessage] = useState("");
 
   const addFav = (e) => {
@@ -19,16 +19,26 @@ const Card = ({ name, username, id, isFavPage = false }) => {
       const updatedFavorites = [...favorites, favCard];
       localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
       setFavs(updatedFavorites);
-      setMessage("¡Dentista agregado a favoritos!"); // Mensaje de éxito
+      setMessage("¡Dentista agregado a favoritos!");
     } else {
-      alert("Este doctor ya está en tus favoritos.");
+      alert("Este dentista ya está en los favoritos.");
     }
   };
 
   return (
-    <div className="bg-white cursor-pointer w-56 h-60 rounded-lg relative">
+    <div
+      className={`cursor-pointer w-56 h-60 rounded-lg relative ${
+        theme === "light" ? "bg-white text-black" : "bg-gray-800 text-white"
+      }`}
+    >
       <figure className="relative mb-2 w-full h-4/5">
-        <span className="absolute bottom-0 left-0 bg-white/60 rounded-lg text-black text-xs m-1 px-3 py-0.5">
+        <span
+          className={`absolute bottom-0 left-0 ${
+            theme === "light"
+              ? "bg-white/60 text-black"
+              : "bg-gray-900/60 text-white"
+          } rounded-lg text-xs m-1 px-3 py-0.5`}
+        >
           {username}
         </span>
         <img
@@ -44,7 +54,9 @@ const Card = ({ name, username, id, isFavPage = false }) => {
       {!isFavPage && (
         <button
           onClick={addFav}
-          className="absolute top-2 right-2 flex justify-center items-center w-7 h-7 rounded-full bg-white p-1"
+          className={`absolute top-2 right-2 flex justify-center items-center w-7 h-7 rounded-full ${
+            theme === "light" ? "bg-white" : "bg-gray-700"
+          } p-1`}
         >
           <img
             src="/images/star.png"
